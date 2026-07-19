@@ -1,14 +1,8 @@
 # TRODO — Chrome Web Store Listing Copy
-
-Use this as a starting draft. Fields in [brackets] need your input before
-submitting.
-
----
-
 ## Title
 TRODO — Automated Trading Copilot
 
-## Short description (132 char max)
+## Short description 
 Link exchange accounts with trade-only API keys and run grid, trend, or arbitrage-scan strategies with built-in risk controls.
 
 ## Detailed description
@@ -45,15 +39,14 @@ Source available at [GitHub link].
 ## Category
 Productivity (or Tools, depending on what's available when you submit)
 
-## Permissions justification (for the reviewer form)
+## Permissions justification
 
 - **storage** — Required to save linked account configuration, encrypted API secrets, and risk settings locally on the user's device. No data leaves the device.
 - **alarms** — Required to periodically wake the background service worker and check strategy conditions while the browser is open.
 - **notifications** — Required to alert the user of security warnings (e.g. a linked key has withdrawals enabled) and trading errors.
 - **host_permissions (api.binance.com, testnet.binance.vision)** — Required to call the exchange's REST API directly from the browser to fetch balances/prices and place orders using the user's own API key.
 
-## Support email
-[your contact email]
+
 
 ## Privacy policy URL
 Link to `PRIVACY_POLICY.md` hosted somewhere public (e.g. raw GitHub URL, or a page on your own site) — the Chrome Web Store requires a reachable URL, not just a file in the package.
