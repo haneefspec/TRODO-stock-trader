@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TRODO Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <h1>TRODO</h1>
+      <p class="tagline">Link an account with a trade-only API key. TRODO never asks for your exchange password, PAN, or any ID document.</p>
+    </header>
+
+    <section class="callout">
+      <strong>Before you link an account:</strong>
+      <ol>
+        <li>On your exchange, create a new API key dedicated to TRODO.</li>
+        <li>Enable <em>Spot &amp; Margin Trading</em> only.</li>
+        <li>Leave <em>Enable Withdrawals</em> switched off — TRODO will warn you if it detects it's on.</li>
+        <li>Restrict the key to your IP if the exchange supports it.</li>
+      </ol>
+    </section>
+
+    <form id="accountForm" class="card">
+      <h2>Link an account</h2>
+
+      <label>Label
+        <input type="text" id="label" placeholder="e.g. Binance — grid BTC/USDT" required />
+      </label>
+
+      <label>Broker
+        <select id="broker">
+          <option value="binance">Binance (crypto)</option>
+          <option value="groww">Groww (Indian stocks / MF, via Groww Trading API)</option>
+        </select>
+      </label>
+
+      <label>Account type
+        <select id="assetMode">
+          <option value="trading">Trading — strategies may propose and (if enabled) place orders</option>
+          <option value="portfolio_view">Portfolio view — read-only, for mutual funds / passive holdings. TRODO never places an order for this account type, no matter what else is configured.</option>
+        </select>
+      </label>
+
+      <label id="networkField">Network
+        <select id="network">
+          <option value="testnet">Testnet (paper trading, recommended first)</option>
+          <option value="live">Live account</option>
+        </select>
+      </label>
+
+      <label>API key
+        <input type="text" id="apiKey" autocomplete="off" required />
+      </label>
+
+      <label>API secret
+        <input type="password" id="apiSecret" autocomplete="off" required />
+      </label>
+
+      <label id="symbolField">Trading pair
+        <input type="text" id="symbol" placeholder="BTCUSDT" value="BTCUSDT" required />
+      </label>
+
+      <fieldset id="growwFields" class="grid-fields">
+        <legend>Groww instrument details</legend>
+        <label>Exchange
+          <select id="growwExchange">
+            <option value="NSE">NSE</option>
+            <option value="BSE">BSE</option>
+          </select>
+        </label>
+        <label>Segment
+          <select id="growwSegment">
+            <option value="CASH">Equity (CASH)</option>
+            <option value="FNO">Futures &amp; Options (FNO)</option>
+          </select>
+        </label>
+        <label>Product
+          <select id="growwProduct">
+            <option value="CNC">Delivery (CNC)</option>
+            <option value="MIS">Intraday (MIS)</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <label id="strategyField">Strategy
+        <select id="strategy">
+          <option value="grid">Grid trading</option>
+          <option value="trend">Trend following (RSI + MACD)</option>
+          <option value="arbitrage">Arbitrage scan (alerts only)</option>
+        </select>
+      </label>
+
+      <fieldset id="gridFields" class="grid-fields">
+        <legend>Grid settings</legend>
+        <label>Center price (USDT)
+          <input type="number" id="gridCenter" step="0.01" placeholder="e.g. 60000" />
+        </label>
+        <label>Spacing (%)
+          <input type="number" id="gridSpacing" step="0.1" value="1" />
+        </label>
+        <label>Levels per side
+          <input type="number" id="gridLevels" step="1" value="4" />
+        </label>
+      </fieldset>
+
+      <div id="riskExecuteSection">
+        <h3>Risk controls</h3>
+        <div class="risk-grid">
+          <label>Max position size (% of portfolio)
+            <input type="number" id="maxPositionPct" value="10" />
+          </label>
+          <label>Stop loss (%)
+            <input type="number" id="stopLossPct" value="3" />
+          </label>
+          <label>Trailing stop (%)
+            <input type="number" id="trailingStopPct" value="2" />
+          </label>
+          <label>Max daily drawdown (%)
+            <input type="number" id="maxDailyDrawdownPct" value="5" />
+          </label>
+          <label>Max open positions
+            <input type="number" id="maxOpenPositions" value="5" />
+          </label>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="autoExecute" />
+          Let TRODO place trades automatically (otherwise it only logs signals)
+        </label>
+
+        <div id="growwComplianceGate" class="callout callout--warning">
+          <label class="checkbox-row">
+            <input type="checkbox" id="complianceAck" />
+            <span>
+              I've read Groww's
+              <a href="https://groww.in/trade-api/docs" target="_blank" rel="noopener">Trading API terms</a>
+              and understand that automated order placement on a SEBI-regulated
+              broker may be subject to exchange/SEBI algorithmic-trading rules
+              (e.g. order tagging, API subscription terms) in addition to my own
+              risk of loss. Required before TRODO will auto-execute live Groww orders.
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <p id="portfolioViewNote" class="disclaimer" hidden>
+        This account is set to <strong>Portfolio view</strong>. TRODO will only read
+        and display holdings here — no strategy runs and no order is ever placed for
+        it, regardless of any other setting. Good fit for mutual funds, SIPs, or any
+        stock position you want to track but never want a bot touching.
+      </p>
+
+      <label>Vault passphrase (to encrypt this API secret)
+        <input type="password" id="vaultPassphrase" autocomplete="off" required />
+      </label>
+
+      <button type="submit" class="btn btn--primary">Save account</button>
+    </form>
+
+    <section class="card">
+      <h2>Linked accounts</h2>
+      <div id="accountsTable"></div>
+    </section>
+
+    <p class="disclaimer">
+      TRODO stores your API secret encrypted, locally, on this device only — nothing is sent to a TRODO server.
+      Automated trading carries risk of loss. See <code>PRIVACY_POLICY.md</code> in the extension package for details.
+    </p>
+  </div>
+  <script src="options.js" type="module"></script>
+</body>
+</html>

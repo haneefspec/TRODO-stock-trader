@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "TRODO — Automated Trading Copilot",
+  "version": "0.1.0",
+  "description": "Link exchange accounts with read-only, trade-only API keys. Run grid, trend-following, and arbitrage-scan strategies with built-in risk controls. No passwords or ID documents are ever stored.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://api.binance.com/*",
+    "https://testnet.binance.vision/*",
+    "https://api.groww.in/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
