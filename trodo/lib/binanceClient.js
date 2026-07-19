@@ -4,6 +4,7 @@
 // pair that the user generates on the exchange with "Enable Spot & Margin
 // Trading" turned ON and "Enable Withdrawals" turned OFF.
 
+// check the ccomments once
 const HOSTS = {
   live: "https://api.binance.com",
   testnet: "https://testnet.binance.vision",
